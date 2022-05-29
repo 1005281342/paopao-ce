@@ -35,6 +35,8 @@ type ServerSettingS struct {
 	WriteTimeout time.Duration
 }
 
+type WebSettingS ServerSettingS
+
 type AppSettingS struct {
 	BarkToken             string
 	MaxCommentCount       int64

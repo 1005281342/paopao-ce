@@ -5,11 +5,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/go-redis/redis/v8"
 	"github.com/rocboss/paopao-ce/global"
-	"github.com/rocboss/paopao-ce/internal/model"
-	"github.com/rocboss/paopao-ce/pkg/logger"
 	"github.com/rocboss/paopao-ce/pkg/setting"
+	"github.com/rocboss/paopao-ce/pkg/setup"
 )
 
 func init() {
@@ -28,41 +26,36 @@ func init() {
 }
 
 func setupSetting() error {
-	setting, err := setting.NewSetting()
-	if err != nil {
+	var (
+		cfg *setting.Setting
+		err error
+	)
+	if cfg, err = setting.NewSetting(); err != nil {
 		return err
 	}
 
-	err = setting.ReadSection("Server", &global.ServerSetting)
-	if err != nil {
+	if err = cfg.ReadSection("Server", &global.ServerSetting); err != nil {
 		return err
 	}
-	err = setting.ReadSection("App", &global.AppSetting)
-	if err != nil {
+	if err = cfg.ReadSection("App", &global.AppSetting); err != nil {
 		return err
 	}
-	err = setting.ReadSection("Log", &global.LoggerSetting)
-	if err != nil {
+	if err = cfg.ReadSection("Log", &global.LoggerSetting); err != nil {
 		return err
 	}
-	err = setting.ReadSection("Database", &global.DatabaseSetting)
-	if err != nil {
+	if err = cfg.ReadSection("Database", &global.DatabaseSetting); err != nil {
 		return err
 	}
-	err = setting.ReadSection("Search", &global.SearchSetting)
-	if err != nil {
+	if err = cfg.ReadSection("Search", &global.SearchSetting); err != nil {
 		return err
 	}
-	err = setting.ReadSection("Redis", &global.RedisSetting)
-	if err != nil {
+	if err = cfg.ReadSection("Redis", &global.RedisSetting); err != nil {
 		return err
 	}
-	err = setting.ReadSection("JWT", &global.JWTSetting)
-	if err != nil {
+	if err = cfg.ReadSection("JWT", &global.JWTSetting); err != nil {
 		return err
 	}
-	err = setting.ReadSection("Storage", &global.AliossSetting)
-	if err != nil {
+	if err = cfg.ReadSection("Storage", &global.AliossSetting); err != nil {
 		return err
 	}
 
@@ -74,27 +67,9 @@ func setupSetting() error {
 }
 
 func setupLogger() error {
-	logger, err := logger.New(global.LoggerSetting)
-	if err != nil {
-		return err
-	}
-	global.Logger = logger
-
-	return nil
+	return setup.Logger()
 }
 
 func setupDBEngine() error {
-	var err error
-	global.DBEngine, err = model.NewDBEngine(global.DatabaseSetting)
-	if err != nil {
-		return err
-	}
-
-	global.Redis = redis.NewClient(&redis.Options{
-		Addr:     global.RedisSetting.Host,
-		Password: global.RedisSetting.Password,
-		DB:       global.RedisSetting.DB,
-	})
-
-	return nil
+	return setup.DBEngine()
 }

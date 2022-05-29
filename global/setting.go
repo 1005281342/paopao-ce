@@ -4,11 +4,13 @@ import (
 	"sync"
 
 	"github.com/rocboss/paopao-ce/pkg/setting"
+
 	"github.com/sirupsen/logrus"
 )
 
 var (
 	ServerSetting   *setting.ServerSettingS
+	WebSetting      *setting.WebSettingS
 	AppSetting      *setting.AppSettingS
 	DatabaseSetting *setting.DatabaseSettingS
 	RedisSetting    *setting.RedisSettingS

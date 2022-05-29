@@ -1,0 +1,15 @@
+Web: # Web服务设置
+  RunMode: debug
+  HttpIp: 0.0.0.0
+  HttpPort: 18008
+  ReadTimeout: 60
+  WriteTimeout: 60
+Log: # 日志
+  LogType: zinc # 可选file或zinc
+  LogFileSavePath: storage/logs
+  LogFileName: app
+  LogFileExt: .log
+  LogZincHost: http://127.0.0.1:4080/es/_bulk
+  LogZincIndex: paopao-log
+  LogZincUser: admin
+  LogZincPassword: admin
