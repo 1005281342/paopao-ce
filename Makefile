@@ -24,3 +24,6 @@ help:
 	@echo "make build: build executables"
 .EXPORT_ALL_VARIABLES:
 GO111MODULE = on
+
+web-build:
+	go-bindata-assetfs -o=web/web.go -pkg=web web/dist/...

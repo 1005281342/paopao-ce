@@ -1,0 +1,53 @@
+# docker-compose.yml文件的版本
+version: "2"
+# 管理的服务
+services:
+    redis:
+        container_name: redis-paopao
+        # 指定镜像
+        image: redis:latest
+        command: redis-server
+        ports:
+            # 端口映射
+            - 6379:6379
+        volumes:
+            # 目录映射
+            - "/Users/jesonouyang/dockergo/redis/conf:/data/db"
+            - "/Users/jesonouyang/dockergo/redis/data:/data"
+
+    mysql:
+        container_name: mysql-paopao
+        image: mysql:latest
+        environment:
+            MYSQL_ROOT_PASSWORD: xxxxxx
+        ports:
+            - "3306:3306"
+        volumes:
+            - "/Users/jesonouyang/dockergo/mysql/data:/data/db"
+            - "/Users/jesonouyang/dockergo/mysql/conf.d:/etc/mysql/conf.d"
+
+    zinc:
+        container_name: zinc-paopao
+        image: public.ecr.aws/h9e2j3o7/zinc:latest
+        environment:
+            ZINC_FIRST_ADMIN_USER: admin
+            ZINC_FIRST_ADMIN_PASSWORD: admin
+            DATA_PATH: "/data"
+        ports:
+            - 4080:4080
+        volumes:
+            - "/Users/jesonouyang/dockergo/zinc/data:/data"
+
+    api:
+        container_name: api-paopao
+        image: 1005281342/paopao-api:alpha
+        ports:
+            - 8000:8000
+        network_mode: "host"
+
+    web:
+        container_name: web-paopao
+        image: 1005281342/paopao-web:alpha
+        ports:
+            - 80:80
+        network_mode: "host"
